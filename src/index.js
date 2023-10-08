@@ -7,8 +7,8 @@ const axios = require('axios');
 const port = process.env.PORT || 8080;
 
 const jwtCheck = auth({
-  audience: 'http://localhost:3000/api/v1',
-  issuerBaseURL: 'https://dev-ey2bs2vl3ozc1mwb.us.auth0.com/',
+  audience: process.env.AUTH0_AUDIENCE,
+  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
   tokenSigningAlg: 'RS256'
 });
 
@@ -22,7 +22,7 @@ app.get('/authorized', async function (req, res) {
     const authInfo = req.auth
     const { token } = authInfo
 
-    const userInfo = await axios.get('https://dev-ey2bs2vl3ozc1mwb.us.auth0.com/userinfo', {
+    const userInfo = await axios.get(`${process.env.AUTH0_ISSUER_BASE_URL}/userinfo`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
